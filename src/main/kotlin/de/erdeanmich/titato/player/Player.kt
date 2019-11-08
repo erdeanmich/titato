@@ -1,8 +1,8 @@
 package de.erdeanmich.titato.player
 
-import de.erdeanmich.titato.BoardPosition
+import de.erdeanmich.titato.board.PlayingBoard
 
 
-abstract class Player {
-    abstract fun getNextMove() : BoardPosition
+abstract class Player(protected val playingBoard: PlayingBoard, val symbol: Char) {
+    abstract fun makeNextMove()
 }
