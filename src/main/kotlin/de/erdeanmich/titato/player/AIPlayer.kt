@@ -5,15 +5,65 @@ import de.erdeanmich.titato.board.PlayingBoard
 import kotlin.random.Random
 
 
-class AIPlayer(playingBoard: PlayingBoard, symbol: Char) : Player(playingBoard,symbol) {
+class AIPlayer(playingBoard: PlayingBoard, symbol: Char, private val humanPlayerSymbol: Char) : Player(playingBoard,symbol) {
+
+    private val allSymbols = listOf(symbol,humanPlayerSymbol)
+
     override fun makeNextMove() {
-        //TODO: calc best move
-        println("Computer makes its move!")
-        var boardPosition : BoardPosition
+        println("Computer makes it's move!")
+        playingBoard.placeSymbolOnBoard(symbol,chooseWisestMove())
+
+    }
+
+    private fun chooseWisestMove() : BoardPosition{
+        val boardPosition : BoardPosition
+        val possibleWinningMoveOfAi = getWinningMoveOfPlayer(symbol)
+        val possibleWinningMoveOfHuman = getWinningMoveOfPlayer(humanPlayerSymbol)
+
+        boardPosition = when {
+            middlePositionIsAvailable() -> MIDDLE_BOARD_POSITION
+            possibleWinningMoveOfHuman != null -> possibleWinningMoveOfHuman
+
+            possibleWinningMoveOfAi != null -> possibleWinningMoveOfAi
+
+            else -> chooseRandomPosition()
+        }
+
+        return boardPosition
+    }
+
+    private fun chooseRandomPosition(): BoardPosition {
+        var boardPosition: BoardPosition
         do {
-            boardPosition = BoardPosition(Random.nextInt(3),Random.nextInt(3))
+            boardPosition = BoardPosition(Random.nextInt(3), Random.nextInt(3)) // TODO: make dynamic
         } while (!playingBoard.canSymbolBePlacedOn(symbol, boardPosition))
-        playingBoard.placeSymbolOnBoard(symbol,boardPosition)
+        return boardPosition
+    }
+
+    private fun getWinningMoveOfPlayer(playerSymbol: Char): BoardPosition? {
+        val opponentMoves = playingBoard.getPositionsMarkedWithSymbol(playerSymbol)
+        val freePositions  = playingBoard.getFreePositions()
+        val fakeBoard = PlayingBoard(allSymbols)
+
+        var winningMove: BoardPosition? = null
+        opponentMoves.forEach { fakeBoard.placeSymbolOnBoard(playerSymbol,it) }
+
+        freePositions.forEach { position ->
+            playingBoard.placeSymbolOnBoard(playerSymbol,position)
+            if(playingBoard.containsThreeSymbolsInARow()) {
+                winningMove = position
+            }
+            playingBoard.erasePosition(position)
+        }
+        return winningMove
+    }
+
+    private fun middlePositionIsAvailable(): Boolean {
+        return playingBoard.canSymbolBePlacedOn(symbol, MIDDLE_BOARD_POSITION)
+    }
+
+    companion object {
+        private val MIDDLE_BOARD_POSITION = BoardPosition(1,1) // TODO: make dynamic
     }
 }
 

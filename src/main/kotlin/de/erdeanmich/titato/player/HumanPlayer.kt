@@ -51,8 +51,4 @@ class HumanPlayer(playingBoard: PlayingBoard, symbol: Char) : Player(playingBoar
     private fun xPositionIsValid(xPosition: Int?) : Boolean {
         return xPosition != null && playingBoard.xPositionIsValid(xPosition)
     }
-
-    companion object {
-        private const val PLAYER_SYMBOL = 'X'
-    }
 }
