@@ -4,17 +4,15 @@ import de.erdeanmich.titato.BoardPosition
 
 
 class PlayingBoard(private val allowedPlayerSymbols: List<Char>) {
-    private val board = getEmptyPlayingBoard()
+    private var board = getEmptyPlayingBoard()
 
     private fun getEmptyPlayingBoard(): Array<Array<Char>> {
-        return Array(MAX_WIDTH) {
-            Array(MAX_HEIGHT) {
-                ' '
+        return Array(MAX_BOARD_LENGTH) {
+            Array(MAX_BOARD_LENGTH) {
+                FREE_BOARD_POSITION_SYMBOL
             }
         }
     }
-
-
 
     fun containsThreeSymbolsInARow() : Boolean {
         return containsAHorizontalRow()
@@ -22,21 +20,39 @@ class PlayingBoard(private val allowedPlayerSymbols: List<Char>) {
                 || containsADiagonalRow()
     }
 
+    fun erasePosition(boardPosition: BoardPosition) {
+        board[boardPosition.xPosition][boardPosition.yPosition] = FREE_BOARD_POSITION_SYMBOL
+    }
+
     private fun containsADiagonalRow() : Boolean {
-        return upperLeftToLowerRightContainsTheSameSymbols()
-                || lowerLeftToUpperRightContainsTheSameSymbols()
+        return descendingDiagonalRowContainsTheSameSymbols()
+                || ascendingDiagonalRowContainsTheSameSymbols()
     }
 
-    private fun upperLeftToLowerRightContainsTheSameSymbols(): Boolean {
-        return rowConsistsOfTheSameSymbol(listOf(board[0][0], board[1][1], board[2][2])) //TODO: make dynamic
+    private fun descendingDiagonalRowContainsTheSameSymbols(): Boolean {
+        return rowConsistsOfTheSameSymbol(getSymbolsOfDescendingDiagonalRow())
     }
 
-    private fun lowerLeftToUpperRightContainsTheSameSymbols(): Boolean {
-        return  rowConsistsOfTheSameSymbol(listOf(board[0][2], board[1][1], board[2][0])) // TODO: make dynamic
+    private fun ascendingDiagonalRowContainsTheSameSymbols(): Boolean {
+        return  rowConsistsOfTheSameSymbol(getSymbolsOfAscendingDiagonalRow())
+    }
+
+    private fun getSymbolsOfAscendingDiagonalRow(): List<Char> {
+        val symbols = ArrayList<Char>()
+        (0 until MAX_BOARD_LENGTH).forEach { x ->
+            (0 until MAX_BOARD_LENGTH).reversed().forEach { y ->
+                symbols.add(board[x][y])
+            }
+        }
+        return symbols
+    }
+
+    private fun getSymbolsOfDescendingDiagonalRow(): List<Char> {
+        return (0 until MAX_BOARD_LENGTH).map { board[it][it]}
     }
 
     private fun containsAHorizontalRow() : Boolean {
-        return (0 until MAX_HEIGHT).any { y -> rowConsistsOfTheSameSymbol(getSymbolsAtYPosition(y)) }
+        return (0 until MAX_BOARD_LENGTH).any { y -> rowConsistsOfTheSameSymbol(getSymbolsAtYPosition(y)) }
     }
 
     private fun getSymbolsAtYPosition(yPosition: Int): List<Char> {
@@ -57,12 +73,12 @@ class PlayingBoard(private val allowedPlayerSymbols: List<Char>) {
     }
 
     fun isFull() : Boolean {
-        return board.all { column -> column.all { it != ' ' } }
+        return board.all { column -> column.all { it != FREE_BOARD_POSITION_SYMBOL } }
     }
 
     fun printToStOut() {
-        (0 until MAX_HEIGHT).forEach { y ->
-            (0 until MAX_WIDTH).forEach { x ->
+        (0 until MAX_BOARD_LENGTH).forEach { y ->
+            (0 until MAX_BOARD_LENGTH).forEach { x ->
                 print("|\t${board[x][y]}\t")
             }
             println("|")
@@ -87,7 +103,7 @@ class PlayingBoard(private val allowedPlayerSymbols: List<Char>) {
         return getPositionsMarkedWithSymbol(FREE_BOARD_POSITION_SYMBOL)
     }
 
-    private fun getPositionsMarkedWithSymbol(symbol: Char): List<BoardPosition> {
+    fun getPositionsMarkedWithSymbol(symbol: Char): List<BoardPosition> {
         return ArrayList<BoardPosition>().apply {
             board.forEachIndexed{xPosition, column ->
                 column.forEachIndexed { yPosition, boardSymbol ->
@@ -99,12 +115,12 @@ class PlayingBoard(private val allowedPlayerSymbols: List<Char>) {
     }
 
     private fun boardPositionIsFree(boardPosition: BoardPosition): Boolean {
-        return board[boardPosition.xPosition][boardPosition.yPosition] == ' '
+        return board[boardPosition.xPosition][boardPosition.yPosition] == FREE_BOARD_POSITION_SYMBOL
     }
 
     private fun boardPositionIsAllowed(boardPosition: BoardPosition) : Boolean {
-        return boardPosition.xPosition in 0 until MAX_WIDTH
-                && boardPosition.yPosition in 0 until MAX_HEIGHT
+        return boardPosition.xPosition in 0 until MAX_BOARD_LENGTH
+                && boardPosition.yPosition in 0 until MAX_BOARD_LENGTH
     }
 
     private fun symbolIsAllowed(symbol: Char): Boolean {
@@ -112,16 +128,19 @@ class PlayingBoard(private val allowedPlayerSymbols: List<Char>) {
     }
 
     fun yPositionIsValid(row: Int) : Boolean {
-        return row in 0 until MAX_HEIGHT
+        return row in 0 until MAX_BOARD_LENGTH
     }
 
     fun xPositionIsValid(column: Int) : Boolean {
-        return column in 0 until MAX_WIDTH
+        return column in 0 until MAX_BOARD_LENGTH
+    }
+
+    fun getMaxPositionValue(): Int {
+        return MAX_BOARD_LENGTH - 1
     }
 
     companion object {
-        private const val MAX_WIDTH = 3
-        private const val MAX_HEIGHT = 3
+        private const val MAX_BOARD_LENGTH = 3
         private const val FREE_BOARD_POSITION_SYMBOL = ' '
     }
 }

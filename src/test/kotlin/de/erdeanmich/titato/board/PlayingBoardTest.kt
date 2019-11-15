@@ -89,7 +89,6 @@ class PlayingBoardTest {
         ).toTypedArray()
         injectArrayIntoBoard(playingBoard, withNoRow)
         assertFalse(playingBoard.containsThreeSymbolsInARow())
-
     }
 
     private fun injectArrayIntoBoard(playingBoard: PlayingBoard, newBoard: Array<Array<Char>>) {
