@@ -77,12 +77,35 @@ class PlayingBoard(private val allowedPlayerSymbols: List<Char>) {
     }
 
     fun printToStOut() {
+        printHeaderRow()
+        printHorizontalSeparatorLine()
+        printBoardBody()
+    }
+
+    private fun printBoardBody() {
         (0 until MAX_BOARD_LENGTH).forEach { y ->
+            print("\t${y + 1}\t")
             (0 until MAX_BOARD_LENGTH).forEach { x ->
                 print("|\t${board[x][y]}\t")
             }
             println("|")
+            printHorizontalSeparatorLine()
         }
+    }
+
+    private fun printHeaderRow() {
+        print("\t\t")
+        (0 until MAX_BOARD_LENGTH).forEach { x ->
+            print("|\t${x + 1}\t")
+        }
+        println("|")
+    }
+
+    private fun printHorizontalSeparatorLine() {
+        (0..MAX_BOARD_LENGTH).forEach { x ->
+            print("\t―\t")
+        }
+        println("")
     }
 
     fun placeSymbolOnBoard(symbol: Char, boardPosition: BoardPosition) {
