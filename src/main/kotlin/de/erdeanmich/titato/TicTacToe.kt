@@ -23,6 +23,7 @@ class TicTacToe {
         println("You are Player ${humanPlayer.symbol}.")
         println("Try to place three symbols in a row on the grid to win the game.")
         println("Prevent that your opponent is doing the same.")
+        println("A random player begins...")
     }
 
     private fun run() {
@@ -45,6 +46,8 @@ class TicTacToe {
     }
 
     private fun printGameEndMessage() {
+        println("The final state of the game:")
+        playingBoard.printToStOut()
         if (playingBoard.containsThreeSymbolsInARow()) {
             println("Player ${activePlayer?.symbol} won.")
         } else {
@@ -76,7 +79,7 @@ class TicTacToe {
     }
 
     companion object {
-        const val HUMAN_PLAYER_SYMBOL = 'X'
-        private const val AI_PLAYER_SYMBOL = 'O'
+        const val HUMAN_PLAYER_SYMBOL = '☓'
+        private const val AI_PLAYER_SYMBOL = '◯'
     }
 }

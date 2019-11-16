@@ -22,9 +22,8 @@ class AIPlayer(playingBoard: PlayingBoard, symbol: Char, private val humanPlayer
 
         boardPosition = when {
             middlePositionIsAvailable() -> MIDDLE_BOARD_POSITION
-            possibleWinningMoveOfHuman != null -> possibleWinningMoveOfHuman
-
             possibleWinningMoveOfAi != null -> possibleWinningMoveOfAi
+            possibleWinningMoveOfHuman != null -> possibleWinningMoveOfHuman
 
             else -> chooseRandomPosition()
         }
@@ -35,7 +34,7 @@ class AIPlayer(playingBoard: PlayingBoard, symbol: Char, private val humanPlayer
     private fun chooseRandomPosition(): BoardPosition {
         var boardPosition: BoardPosition
         do {
-            boardPosition = BoardPosition(Random.nextInt(3), Random.nextInt(3)) // TODO: make dynamic
+            boardPosition = BoardPosition(Random.nextInt(playingBoard.getMaxPositionValue()), playingBoard.getMaxPositionValue())
         } while (!playingBoard.canSymbolBePlacedOn(symbol, boardPosition))
         return boardPosition
     }
@@ -63,7 +62,6 @@ class AIPlayer(playingBoard: PlayingBoard, symbol: Char, private val humanPlayer
     }
 
     companion object {
-        private val MIDDLE_BOARD_POSITION = BoardPosition(1,1) // TODO: make dynamic
+        private val MIDDLE_BOARD_POSITION = BoardPosition(1,1)
     }
 }
-
