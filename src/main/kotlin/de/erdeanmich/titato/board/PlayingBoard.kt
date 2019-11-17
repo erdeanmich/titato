@@ -1,10 +1,13 @@
 package de.erdeanmich.titato.board
 
 import de.erdeanmich.titato.BoardPosition
+import java.io.PrintStream
 
 
 class PlayingBoard(private val allowedPlayerSymbols: List<Char>) {
     private var board = getEmptyPlayingBoard()
+    private val out = PrintStream(System.out,true,Charsets.UTF_8)
+
 
     private fun getEmptyPlayingBoard(): Array<Array<Char>> {
         return Array(MAX_BOARD_LENGTH) {
@@ -39,10 +42,14 @@ class PlayingBoard(private val allowedPlayerSymbols: List<Char>) {
 
     private fun getSymbolsOfAscendingDiagonalRow(): List<Char> {
         val symbols = ArrayList<Char>()
+        val xPositions = ArrayList<Int>()
+
         (0 until MAX_BOARD_LENGTH).forEach { x ->
-            (0 until MAX_BOARD_LENGTH).reversed().forEach { y ->
-                symbols.add(board[x][y])
-            }
+            xPositions.add((x))
+        }
+
+        (0 until MAX_BOARD_LENGTH).reversed().forEachIndexed { y, index ->
+            symbols.add(board[xPositions[index]][y])
         }
         return symbols
     }
@@ -88,7 +95,7 @@ class PlayingBoard(private val allowedPlayerSymbols: List<Char>) {
             (0 until MAX_BOARD_LENGTH).forEach { x ->
                 print("|\t${board[x][y]}\t")
             }
-            println("|")
+            out.println("|")
             printHorizontalSeparatorLine()
         }
     }
@@ -98,14 +105,14 @@ class PlayingBoard(private val allowedPlayerSymbols: List<Char>) {
         (0 until MAX_BOARD_LENGTH).forEach { x ->
             print("|\t${x + 1}\t")
         }
-        println("|")
+        out.println("|")
     }
 
     private fun printHorizontalSeparatorLine() {
         (0..MAX_BOARD_LENGTH).forEach { x ->
-            print("\t―\t")
+            print("\t-\t")
         }
-        println("")
+        out.println("")
     }
 
     fun placeSymbolOnBoard(symbol: Char, boardPosition: BoardPosition) {

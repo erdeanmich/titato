@@ -13,7 +13,6 @@ class TicTacToe {
     private val aiPlayer = AIPlayer(playingBoard, AI_PLAYER_SYMBOL, HUMAN_PLAYER_SYMBOL)
     private var activePlayer : Player? = null
 
-
     init {
         run()
     }
@@ -79,7 +78,7 @@ class TicTacToe {
     }
 
     companion object {
-        const val HUMAN_PLAYER_SYMBOL = '☓'
-        private const val AI_PLAYER_SYMBOL = '◯'
+        const val HUMAN_PLAYER_SYMBOL = 'X'
+        private const val AI_PLAYER_SYMBOL = 'O'
     }
 }

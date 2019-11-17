@@ -72,7 +72,7 @@ class PlayingBoardTest {
         ).toTypedArray()
 
         injectArrayIntoBoard(playingBoard,withOtherDiagonalRow)
-        assertTrue(playingBoard.containsThreeSymbolsInARow())
+        assertFalse(playingBoard.containsThreeSymbolsInARow())
 
         val withHorizontalRow = listOf(
             listOf('O','X','O').toTypedArray(),
