@@ -1,6 +1,6 @@
 package de.erdeanmich.titato.player
 
-import de.erdeanmich.titato.BoardPosition
+import de.erdeanmich.titato.board.BoardPosition
 import de.erdeanmich.titato.board.PlayingBoard
 
 
@@ -16,7 +16,7 @@ class HumanPlayer(playingBoard: PlayingBoard, symbol: Char) : Player(playingBoar
         do {
             val y = getYPositionByInput()
             val x = getXPositionByInput()
-            boardPosition = BoardPosition(x,y)
+            boardPosition = BoardPosition(x, y)
         } while (!playingBoard.canSymbolBePlacedOn(symbol,boardPosition!!))
 
         return boardPosition

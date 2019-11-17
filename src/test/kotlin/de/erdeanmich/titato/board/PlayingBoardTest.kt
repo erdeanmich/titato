@@ -1,6 +1,5 @@
 package de.erdeanmich.titato.board
 
-import de.erdeanmich.titato.BoardPosition
 import org.mockito.internal.util.reflection.FieldSetter
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
@@ -26,20 +25,20 @@ class PlayingBoardTest {
     @Test
     fun testPlaceSymbolOnBoard() {
         val playingBoard = PlayingBoard(listOf('X','O'))
-        playingBoard.placeSymbolOnBoard('X', BoardPosition(1,1))
+        playingBoard.placeSymbolOnBoard('X', BoardPosition(1, 1))
 
         assertFailsWith(InvalidPositionException::class) {
-            playingBoard.placeSymbolOnBoard('X',BoardPosition(10,10))
+            playingBoard.placeSymbolOnBoard('X', BoardPosition(10, 10))
         }
     }
 
     @Test
     fun testCanSymbolBePlacedOn() {
         val playingBoard = PlayingBoard(listOf('X','O'))
-        assertTrue(playingBoard.canSymbolBePlacedOn('X', BoardPosition(1,1)))
-        assertFalse(playingBoard.canSymbolBePlacedOn('X',BoardPosition(1,10)))
-        assertFalse(playingBoard.canSymbolBePlacedOn('X',BoardPosition(10,1)))
-        assertFalse(playingBoard.canSymbolBePlacedOn('Ä',BoardPosition(1,1)))
+        assertTrue(playingBoard.canSymbolBePlacedOn('X', BoardPosition(1, 1)))
+        assertFalse(playingBoard.canSymbolBePlacedOn('X', BoardPosition(1, 10)))
+        assertFalse(playingBoard.canSymbolBePlacedOn('X', BoardPosition(10, 1)))
+        assertFalse(playingBoard.canSymbolBePlacedOn('Ä', BoardPosition(1, 1)))
     }
 
     @Test
@@ -72,7 +71,7 @@ class PlayingBoardTest {
         ).toTypedArray()
 
         injectArrayIntoBoard(playingBoard,withOtherDiagonalRow)
-        assertFalse(playingBoard.containsThreeSymbolsInARow())
+        assertTrue(playingBoard.containsThreeSymbolsInARow())
 
         val withHorizontalRow = listOf(
             listOf('O','X','O').toTypedArray(),

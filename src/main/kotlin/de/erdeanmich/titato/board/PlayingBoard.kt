@@ -1,6 +1,5 @@
 package de.erdeanmich.titato.board
 
-import de.erdeanmich.titato.BoardPosition
 import java.io.PrintStream
 
 
@@ -138,7 +137,7 @@ class PlayingBoard(private val allowedPlayerSymbols: List<Char>) {
             board.forEachIndexed{xPosition, column ->
                 column.forEachIndexed { yPosition, boardSymbol ->
                     if (boardSymbol == symbol)
-                        add(BoardPosition(xPosition,yPosition))
+                        add(BoardPosition(xPosition, yPosition))
                 }
             }
         }

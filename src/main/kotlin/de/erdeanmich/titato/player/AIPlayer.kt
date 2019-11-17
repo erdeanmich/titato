@@ -1,6 +1,6 @@
 package de.erdeanmich.titato.player
 
-import de.erdeanmich.titato.BoardPosition
+import de.erdeanmich.titato.board.BoardPosition
 import de.erdeanmich.titato.board.PlayingBoard
 import kotlin.random.Random
 
@@ -15,7 +15,7 @@ class AIPlayer(playingBoard: PlayingBoard, symbol: Char, private val humanPlayer
 
     }
 
-    private fun chooseWisestMove() : BoardPosition{
+    private fun chooseWisestMove() : BoardPosition {
         val boardPosition : BoardPosition
         val possibleWinningMoveOfAi = getWinningMoveOfPlayer(symbol)
         val possibleWinningMoveOfHuman = getWinningMoveOfPlayer(humanPlayerSymbol)
@@ -34,7 +34,10 @@ class AIPlayer(playingBoard: PlayingBoard, symbol: Char, private val humanPlayer
     private fun chooseRandomPosition(): BoardPosition {
         var boardPosition: BoardPosition
         do {
-            boardPosition = BoardPosition(Random.nextInt(playingBoard.getMaxPositionValue()), playingBoard.getMaxPositionValue())
+            boardPosition = BoardPosition(
+                Random.nextInt(playingBoard.getMaxPositionValue()),
+                playingBoard.getMaxPositionValue()
+            )
         } while (!playingBoard.canSymbolBePlacedOn(symbol, boardPosition))
         return boardPosition
     }
@@ -62,6 +65,6 @@ class AIPlayer(playingBoard: PlayingBoard, symbol: Char, private val humanPlayer
     }
 
     companion object {
-        private val MIDDLE_BOARD_POSITION = BoardPosition(1,1)
+        private val MIDDLE_BOARD_POSITION = BoardPosition(1, 1)
     }
 }
