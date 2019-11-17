@@ -1,4 +1,4 @@
-package de.erdeanmich.titato
+package de.erdeanmich.titato.board
 
 
 data class BoardPosition(
